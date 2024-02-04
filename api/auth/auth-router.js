@@ -1,7 +1,19 @@
 const router = require('express').Router();
+const bcrypt = require('bcryptjs')
+const User = require('./auth-model')
 
-router.post('/register', (req, res) => {
-  res.end('implement register, please!');
+router.post('/register', async (req, res,next) => {
+  
+  try{
+    const {username,password} = req.body
+    const hash = bcrypt.hashSync(password,8)
+    const newUser = {username,password:hash}
+    console.log(newUser)
+    User.addUser(newUser)
+    console.log('user added')
+  }catch(err){
+    next(err)
+  }
   /*
     IMPLEMENT
     You are welcome to build additional middlewares to help with the endpoint's functionality.
