@@ -3,14 +3,32 @@ const bcrypt = require('bcryptjs')
 const User = require('./auth-model')
 
 router.post('/register', async (req, res,next) => {
-  
   try{
     const {username,password} = req.body
+    if(!username || !password){
+      return res.status(400).json({message: "username and password required"})
+    }
+    try{
+      const existingUser = await User.findBy(username)
+      if(existingUser){
+        res.status(409).json({message: "username taken"})
+      }
+    }catch(error){
+      next(error)
+    }
     const hash = bcrypt.hashSync(password,8)
     const newUser = {username,password:hash}
-    console.log(newUser)
-    User.addUser(newUser)
-    console.log('user added')
+    console.log(newUser,'newuser')
+    
+    const createdUser = await User.addUser(newUser)
+    console.log(createdUser,'created user')
+
+
+    res.status(201).json({
+      id:createdUser.id,
+      username:createdUser.username,
+      password: createdUser.password
+    })
   }catch(err){
     next(err)
   }
