@@ -1,7 +1,11 @@
 const jwt = require('jsonwebtoken')
 
 module.exports = (req, res, next) => {
-  next();
+  if(req.session.user){
+    next()
+  }else {
+    next({message: "token required"})
+  } 
   /*
     IMPLEMENT
 
