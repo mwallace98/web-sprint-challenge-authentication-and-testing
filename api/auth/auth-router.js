@@ -66,7 +66,7 @@ router.post('/login', async (req, res,next) => {
     const user = await User.findBy(username)
 
     if(!username || !password){
-      return res.json({message: "username and password required"})
+      return res.json({message:"username and password required"})
     }else if(user && bcrypt.compareSync(password,user.password)){
       const token = generateToken(user)
       req.session.user = user
@@ -75,7 +75,7 @@ router.post('/login', async (req, res,next) => {
         token: token
       })
     }else {
-      res.status(401).json({message: 'invalid credentials'})
+      return res.status(401).json({message:'invalid credentials'})
     }
   }catch (err){
     next(err)
