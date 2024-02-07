@@ -1,22 +1,11 @@
 const jwt = require('jsonwebtoken')
 
-function generateToken(user){
-  const payload = {
-    userId: user.id,
-    username: user.username
-  }
-  const secret = 'secret';
-  const options = {
-    expiresIn: '1d'
-  }
-  return jwt.sign(payload,secret,options)
-}
 
 module.exports = (req, res, next) => {
   const token = req.headers.authorization;
 
   if(!token){
-    return res.status(401).json({message: 'Token required'})
+    return res.status(401).json({message: 'token required'})
   }
 
   jwt.verify(token,'secret', (err,decodedToken) => {
