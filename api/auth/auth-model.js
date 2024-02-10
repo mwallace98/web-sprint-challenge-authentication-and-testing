@@ -12,9 +12,11 @@ async function addUser(user){
     return newUser
 }
 
+//FIX THISSSSSSS
 async function findBy(username){
+    console.log(username,'username')
     const user = await db('users')
-    .where({username})
+    .where({username:username})
     .first()
     
     return user

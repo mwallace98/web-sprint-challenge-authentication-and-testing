@@ -63,11 +63,14 @@ router.post('/register', async (req, res,next) => {
 router.post('/login', async (req, res,next) => {
   try{
     const {username,password} = req.body
-    const user = await User.findBy(username)
-
     if(!username || !password){
       return res.status(400).json({message:"username and password required"})
-    }else if(user && bcrypt.compareSync(password,user.password)){
+    }
+    const user = await User.findBy(username)
+  
+
+
+     if(user && bcrypt.compareSync(password,user.password)){
       const token = generateToken(user)
       req.session.user = user
       res.json({
